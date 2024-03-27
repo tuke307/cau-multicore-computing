@@ -38,7 +38,7 @@ public class evaluation {
 
     private static void print_exec_time() {
         // Print the table header
-        System.out.printf("%-15s", "exec");
+        System.out.printf("%-15s", "exec (ms)");
         for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
             System.out.printf("%-15s", type);
         }
