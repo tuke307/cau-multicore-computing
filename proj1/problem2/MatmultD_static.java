@@ -66,37 +66,62 @@ public class MatmultD_static {
         System.out.println();
         System.out.println("Matrix Sum = " + sum + "\n");
     }
+    
+    public static int[][] multMatrix(int[][] matrixA, int[][] matrixB, int threadCount) throws InterruptedException {
+        // Check if matrixA is empty
+        if (matrixA.length == 0) {
+            return new int[0][0]; // Return an empty matrix
+        }
 
-    public static int[][] multMatrix(int a[][], int b[][], int thread_no) throws InterruptedException {
-        if (a.length == 0)
-            return new int[0][0];
-        if (a[0].length != b.length)
-            return null; // invalid dims
+        // Check if the number of columns in matrixA is not equal to the number of rows in matrixB
+        if (matrixA[0].length != matrixB.length) {
+            return null; // Return null for invalid dimensions
+        }
 
-        int n = a[0].length;
-        int m = a.length;
-        int p = b[0].length;
-        int ans[][] = new int[m][p];
+        // Get the common dimension between the two matrices
+        int commonDimension = matrixA[0].length;
 
-        Thread[] threads = new Thread[thread_no];
-        for (int t = 0; t < thread_no; t++) {
-            final int threadId = t;
-            threads[t] = new Thread(() -> {
-                for (int i = threadId; i < m; i += thread_no) {
-                    for (int j = 0; j < p; j++) {
-                        for (int k = 0; k < n; k++) {
-                            ans[i][j] += a[i][k] * b[k][j];
+        // Get the number of rows in matrixA
+        int rowsInMatrixA = matrixA.length;
+
+        // Get the number of columns in matrixB
+        int colsInMatrixB = matrixB[0].length;
+
+        // Create a new matrix to store the result of the multiplication
+        int[][] resultMatrix = new int[rowsInMatrixA][colsInMatrixB];
+
+        // Create an array of threads
+        Thread[] threads = new Thread[threadCount];
+
+        // Loop over each thread
+        for (int threadIndex = 0; threadIndex < threadCount; threadIndex++) {
+            // Capture the thread index for use in the thread
+            final int currentThreadIndex = threadIndex;
+
+            // Create a new thread
+            threads[threadIndex] = new Thread(() -> {
+                // Each thread processes a subset of the rows of matrixA
+                for (int rowIndex = currentThreadIndex; rowIndex < rowsInMatrixA; rowIndex += threadCount) {
+                    // Multiply the current row of matrixA by each column of matrixB
+                    for (int colIndex = 0; colIndex < colsInMatrixB; colIndex++) {
+                        // Multiply and sum the corresponding elements in the current row and column
+                        for (int elementIndex = 0; elementIndex < commonDimension; elementIndex++) {
+                            resultMatrix[rowIndex][colIndex] += matrixA[rowIndex][elementIndex] * matrixB[elementIndex][colIndex];
                         }
                     }
                 }
             });
-            threads[t].start();
+
+            // Start the thread
+            threads[threadIndex].start();
         }
 
+        // Wait for all threads to finish
         for (Thread thread : threads) {
             thread.join();
         }
 
-        return ans;
+        // Return the result matrix
+        return resultMatrix;
     }
 }

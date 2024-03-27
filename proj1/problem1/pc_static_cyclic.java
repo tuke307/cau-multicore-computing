@@ -35,20 +35,31 @@ public class pc_static_cyclic {
         // {1~10, 41~50, 81~90, ...} {11~20, 51~60, 91~100, ...}, {21~30, 61~70,
         // 101~110, ...}, {31~40, 71~80, 111~120, ...}
         for (int i = 0; i < num_threads; i++) {
+            // Each thread gets a unique ID
             final int threadId = i;
 
+            // Create a new thread for each ID
             threads[i] = new Thread(() -> {
+                // Record the start time for this thread
                 startTimes[threadId] = System.currentTimeMillis();
-                for (int j = threadId * num_task_size; j < num_end; j += num_threads * num_task_size) {
-                    int end = Math.min(j + num_task_size, num_end);
-                    for (int k = j; k < end; k++) {
-                        if (Functions.isPrime(k)) {
+
+                // Divide the tasks among the threads
+                for (int taskStart = threadId * num_task_size; taskStart < num_end; taskStart += num_threads * num_task_size) {
+                    // Determine the end of the current task
+                    int taskEnd = Math.min(taskStart + num_task_size, num_end);
+
+                    // Loop over the range of the current task
+                    for (int currentNumber = taskStart; currentNumber < taskEnd; currentNumber++) {
+                        // If the current number is prime, increment the counter
+                        if (Functions.isPrime(currentNumber)) {
                             synchronized (pc_static_cyclic.class) {
                                 counter++;
                             }
                         }
                     }
                 }
+
+                // Record the end time for this thread
                 endTimes[threadId] = System.currentTimeMillis();
             });
 
