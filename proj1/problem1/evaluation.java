@@ -3,13 +3,14 @@ import java.util.Map;
 
 public class evaluation {
     private static int num_end = 200000;
-    private static int num_task_size = 4;
+    private static int num_task_size = 10;
     private static int[] threadCounts = {1, 2, 4, 6, 8, 10, 12, 14, 16, 32};
     private static Map<String, Map<Integer, Result>> results = new HashMap<>();
 
     public static void main(String[] args) {
         calculateAllResults();
         print_exec_time();
+        System.out.println();
         print_performance();
     }
 
