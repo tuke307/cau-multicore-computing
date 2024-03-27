@@ -39,7 +39,7 @@ public class pc_static_block {
             threads[i] = new Thread(() -> {
                 startTimes[threadId] = System.currentTimeMillis();
                 for (int j = start; j < end; j++) {
-                    if (isPrime(j)) {
+                    if (Functions.isPrime(j)) {
                         synchronized (pc_static_block.class) {
                             counter++;
                         }
@@ -68,16 +68,5 @@ public class pc_static_block {
         }
 
         return new Result(totalExecutionTime, threadExecutionTimes, counter);
-    }
-
-    private static boolean isPrime(int x) {
-        int i;
-        if (x <= 1)
-            return false;
-        for (i = 2; i < x; i++) {
-            if (x % i == 0)
-                return false;
-        }
-        return true;
     }
 }

@@ -42,7 +42,7 @@ public class pc_static_cyclic {
                 for (int j = threadId * num_task_size; j < num_end; j += num_threads * num_task_size) {
                     int end = Math.min(j + num_task_size, num_end);
                     for (int k = j; k < end; k++) {
-                        if (isPrime(k)) {
+                        if (Functions.isPrime(k)) {
                             synchronized (pc_static_cyclic.class) {
                                 counter++;
                             }
@@ -72,16 +72,5 @@ public class pc_static_cyclic {
         }
 
         return new Result(totalExecutionTime, threadExecutionTimes, counter);
-    }
-
-    private static boolean isPrime(int x) {
-        int i;
-        if (x <= 1)
-            return false;
-        for (i = 2; i < x; i++) {
-            if (x % i == 0)
-                return false;
-        }
-        return true;
     }
 }

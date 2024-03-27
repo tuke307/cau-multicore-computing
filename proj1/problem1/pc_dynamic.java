@@ -49,7 +49,7 @@ public class pc_dynamic {
                         break;
                     taskEnd = Math.min(taskStart + num_task_size, num_end);
                     for (int k = taskStart; k < taskEnd; k++) {
-                        if (isPrime(k)) {
+                        if (Functions.isPrime(k)) {
                             synchronized (lock) {
                                 counter++;
                             }
@@ -80,15 +80,5 @@ public class pc_dynamic {
 
         return new Result(totalExecutionTime, threadExecutionTimes, counter);
 
-    }
-
-    private static boolean isPrime(int x) {
-        if (x <= 1)
-            return false;
-        for (int i = 2; i < x; i++) {
-            if (x % i == 0)
-                return false;
-        }
-        return true;
     }
 }
