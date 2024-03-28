@@ -1,3 +1,4 @@
+package Helper;
 public class Functions {
     public static boolean isPrime(int x) {
         if (x <= 1)

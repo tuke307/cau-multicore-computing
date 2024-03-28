@@ -1,5 +1,8 @@
+import Helper.Functions;
+import Helper.Result;
+
 public class pc_static_cyclic {
-    private static int num_end = 200000; // default input
+    private static int num_end = 200000;
     private static int num_threads = 4;
     private static int num_task_size = 10;
     private static int counter = 0;
@@ -35,12 +38,10 @@ public class pc_static_cyclic {
         // {1~10, 41~50, 81~90, ...} {11~20, 51~60, 91~100, ...}, {21~30, 61~70,
         // 101~110, ...}, {31~40, 71~80, 111~120, ...}
         for (int i = 0; i < num_threads; i++) {
-            // Each thread gets a unique ID
+            // threadId can not be changed after initialization
             final int threadId = i;
 
-            // Create a new thread for each ID
             threads[i] = new Thread(() -> {
-                // Record the start time for this thread
                 startTimes[threadId] = System.currentTimeMillis();
 
                 // Divide the tasks among the threads
@@ -50,7 +51,6 @@ public class pc_static_cyclic {
 
                     // Loop over the range of the current task
                     for (int currentNumber = taskStart; currentNumber < taskEnd; currentNumber++) {
-                        // If the current number is prime, increment the counter
                         if (Functions.isPrime(currentNumber)) {
                             synchronized (pc_static_cyclic.class) {
                                 counter++;
@@ -59,7 +59,6 @@ public class pc_static_cyclic {
                     }
                 }
 
-                // Record the end time for this thread
                 endTimes[threadId] = System.currentTimeMillis();
             });
 

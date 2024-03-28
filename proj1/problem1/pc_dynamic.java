@@ -1,3 +1,7 @@
+
+import Helper.Functions;
+import Helper.Result;
+
 public class pc_dynamic {
     private static int num_end = 200000;
     private static int num_threads = 4;

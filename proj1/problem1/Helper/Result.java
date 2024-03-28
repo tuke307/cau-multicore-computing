@@ -1,3 +1,4 @@
+package Helper;
 public class Result {
         public long totalExecutionTime;
         public long[] threadExecutionTimes;

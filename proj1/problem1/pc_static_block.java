@@ -1,5 +1,8 @@
+import Helper.Functions;
+import Helper.Result;
+
 public class pc_static_block {
-    private static int num_end = 200000; // default input
+    private static int num_end = 200000;
     private static int num_threads = 4;
     private static int counter = 0;
 
@@ -38,6 +41,8 @@ public class pc_static_block {
 
             threads[i] = new Thread(() -> {
                 startTimes[threadId] = System.currentTimeMillis();
+
+                // Find prime numbers in the range [start, end)
                 for (int j = start; j < end; j++) {
                     if (Functions.isPrime(j)) {
                         synchronized (pc_static_block.class) {
