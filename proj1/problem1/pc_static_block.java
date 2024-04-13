@@ -1,10 +1,11 @@
 import Helper.Functions;
 import Helper.Result;
+import Helper.BlockPrimeThread;
+
 
 public class pc_static_block {
     private static int num_end = 200000;
     private static int num_threads = 4;
-    private static int counter = 0;
 
     public static void main(String[] args) {
         if (args.length == 2) {
@@ -26,38 +27,21 @@ public class pc_static_block {
 
     public static Result calculatePrimes(int num_threads, int num_end) {
         long startTime = System.currentTimeMillis();
-        Thread[] threads = new Thread[num_threads];
-        long[] startTimes = new long[num_threads];
-        long[] endTimes = new long[num_threads];
+        BlockPrimeThread[] threads = new BlockPrimeThread[num_threads];
         int workloadPerThread = num_end / num_threads;
-        counter = 0;
 
         // for example, assuming 4 threads and 200000 numbers
         // static decomposition method: {0-49999}, {50000-99999}, {100000-149999}, {150000-199999}
         for (int i = 0; i < num_threads; i++) {
-            final int start = i * workloadPerThread; // 0, 49999, 99999, 149999
-            final int end = (i + 1) * workloadPerThread; // 50000, 100000, 150000, 200000
-            final int threadId = i;
+            final int start = i * workloadPerThread;
+            final int end = (i + 1) * workloadPerThread;
 
-            threads[i] = new Thread(() -> {
-                startTimes[threadId] = System.currentTimeMillis();
-
-                // Find prime numbers in the range [start, end)
-                for (int j = start; j < end; j++) {
-                    if (Functions.isPrime(j)) {
-                        synchronized (pc_static_block.class) {
-                            counter++;
-                        }
-                    }
-                }
-                endTimes[threadId] = System.currentTimeMillis();
-            });
-
+            threads[i] = new BlockPrimeThread(start, end);
             threads[i].start();
         }
 
         // Wait for all threads to finish
-        for (Thread thread : threads) {
+        for (BlockPrimeThread thread : threads) {
             try {
                 thread.join();
             } catch (InterruptedException e) {
@@ -68,10 +52,12 @@ public class pc_static_block {
         long endTime = System.currentTimeMillis();
         long totalExecutionTime = endTime - startTime;
         long[] threadExecutionTimes = new long[num_threads];
+        int totalCounter = 0;
         for (int i = 0; i < num_threads; i++) {
-            threadExecutionTimes[i] = endTimes[i] - startTimes[i];
+            threadExecutionTimes[i] = threads[i].getExecutionTime();
+            totalCounter += threads[i].getCounter();
         }
 
-        return new Result(totalExecutionTime, threadExecutionTimes, counter);
+        return new Result(totalExecutionTime, threadExecutionTimes, totalCounter);
     }
 }

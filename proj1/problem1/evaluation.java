@@ -1,12 +1,12 @@
 
 import java.util.HashMap;
 import java.util.Map;
-import Helper.*;
+import Helper.Result;
 
 public class evaluation {
-    private static int num_end = 200000;
-    private static int num_task_size = 10;
-    private static int[] threadCounts = {1, 2, 4, 6, 8, 10, 12, 14, 16, 32};
+    private static final int NUM_END = 200000;
+    private static final int NUM_TASK_SIZE = 10;
+    private static final int[] THREAD_COUNTS = {1, 2, 4, 8, 16, 32};
     private static Map<String, Map<Integer, Result>> results = new HashMap<>();
 
     public static void main(String[] args) {
@@ -16,24 +16,24 @@ public class evaluation {
         print_performance();
     }
 
+    private static Result calculatePrimesByType(String type, int threadCount) {
+        switch (type) {
+            case "static (block)":
+                return pc_static_block.calculatePrimes(threadCount, NUM_END);
+            case "static (cyclic)":
+                return pc_static_cyclic.calculatePrimes(threadCount, NUM_END, NUM_TASK_SIZE);
+            case "dynamic":
+                return pc_dynamic.calculatePrimes(threadCount, NUM_END, NUM_TASK_SIZE);
+            default:
+                throw new IllegalArgumentException("Invalid type: " + type);
+        }
+    }
+
     private static void calculateAllResults() {
         for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
             results.put(type, new HashMap<>());
-            for (int threadCount : threadCounts) {
-                Result result;
-                switch (type) {
-                    case "static (block)":
-                        result = pc_static_block.calculatePrimes(threadCount, num_end);
-                        break;
-                    case "static (cyclic)":
-                        result = pc_static_cyclic.calculatePrimes(threadCount, num_end, num_task_size);
-                        break;
-                    case "dynamic":
-                        result = pc_dynamic.calculatePrimes(threadCount, num_end, num_task_size);
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Invalid type: " + type);
-                }
+            for (int threadCount : THREAD_COUNTS) {
+                Result result = calculatePrimesByType(type, threadCount);
                 results.get(type).put(threadCount, result);
             }
         }
@@ -42,17 +42,18 @@ public class evaluation {
     private static void print_exec_time() {
         // Print the table header
         System.out.printf("%-15s", "exec (ms)");
-        for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
-            System.out.printf("%-15s", type);
+        for (String column : new String[]{"static (block)", "primeCount", "static (cyclic)", "primeCount", "dynamic", "primeCount"}) {
+            System.out.printf("%-15s", column);
         }
         System.out.println();
 
         // Print the results for each thread count
-        for (int threadCount : threadCounts) {
+        for (int threadCount : THREAD_COUNTS) {
             System.out.printf("%-15d", threadCount);
             for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
                 Result result = results.get(type).get(threadCount);
                 System.out.printf("%-15d", result.totalExecutionTime);
+                System.out.printf("%-15d", result.primeCounter);
             }
             System.out.println();
         }
@@ -67,7 +68,7 @@ public class evaluation {
         System.out.println();
 
         // Print the results for each thread count
-        for (int threadCount : threadCounts) {
+        for (int threadCount : THREAD_COUNTS) {
             System.out.printf("%-15d", threadCount);
             for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
                 Result result = results.get(type).get(threadCount);

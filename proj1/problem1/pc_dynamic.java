@@ -1,6 +1,8 @@
 
 import Helper.Functions;
 import Helper.Result;
+import Helper.DynamicPrimeThread;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class pc_dynamic {
     private static int num_end = 200000;
@@ -30,44 +32,19 @@ public class pc_dynamic {
         }
     }
 
+
     public static Result calculatePrimes(int num_threads, int num_end, int num_task_size) {
         long startTime = System.currentTimeMillis();
-        Thread[] threads = new Thread[num_threads];
-        long[] startTimes = new long[num_threads];
-        long[] endTimes = new long[num_threads];
-        counter = 0;
-        sharedCounter = 0;
+        DynamicPrimeThread[] threads = new DynamicPrimeThread[num_threads];
+        AtomicInteger sharedCounter = new AtomicInteger(0);
 
         for (int i = 0; i < num_threads; i++) {
-            final int threadId = i;
-
-            threads[i] = new Thread(() -> {
-                startTimes[threadId] = System.currentTimeMillis();
-                while (true) {
-                    int taskStart, taskEnd;
-                    synchronized (lock) {
-                        taskStart = sharedCounter;
-                        sharedCounter += num_task_size;
-                    }
-                    if (taskStart >= num_end)
-                        break;
-                    taskEnd = Math.min(taskStart + num_task_size, num_end);
-                    for (int k = taskStart; k < taskEnd; k++) {
-                        if (Functions.isPrime(k)) {
-                            synchronized (lock) {
-                                counter++;
-                            }
-                        }
-                    }
-                }
-                endTimes[threadId] = System.currentTimeMillis();
-            });
-
+            threads[i] = new DynamicPrimeThread(num_end, sharedCounter, num_task_size);
             threads[i].start();
         }
 
         // Wait for all threads to finish
-        for (Thread thread : threads) {
+        for (DynamicPrimeThread thread : threads) {
             try {
                 thread.join();
             } catch (InterruptedException e) {
@@ -78,11 +55,12 @@ public class pc_dynamic {
         long endTime = System.currentTimeMillis();
         long totalExecutionTime = endTime - startTime;
         long[] threadExecutionTimes = new long[num_threads];
+        int totalCounter = 0;
         for (int i = 0; i < num_threads; i++) {
-            threadExecutionTimes[i] = endTimes[i] - startTimes[i];
+            threadExecutionTimes[i] = threads[i].getExecutionTime();
+            totalCounter += threads[i].getCounter();
         }
 
-        return new Result(totalExecutionTime, threadExecutionTimes, counter);
-
+        return new Result(totalExecutionTime, threadExecutionTimes, totalCounter);
     }
 }
