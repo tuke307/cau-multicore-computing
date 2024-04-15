@@ -1,4 +1,4 @@
-package Helper;
+package PrimeThreadStrategies;
 
 import Helper.Functions;
 import java.util.concurrent.atomic.AtomicInteger;

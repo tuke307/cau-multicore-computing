@@ -11,9 +11,8 @@ public class evaluation {
 
     public static void main(String[] args) {
         calculateAllResults();
-        print_exec_time();
-        System.out.println();
-        print_performance();
+        printExecTime();
+        printPerformance();
     }
 
     private static Result calculatePrimesByType(String type, int threadCount) {
@@ -39,9 +38,12 @@ public class evaluation {
         }
     }
 
-    private static void print_exec_time() {
+    private static void printExecTime() {
+        System.out.println();
+        System.out.println("Execution time (ms)");
+
         // Print the table header
-        System.out.printf("%-15s", "exec (ms)");
+        System.out.printf("%-15s", "threads");
         for (String column : new String[]{"static (block)", "primeCount", "static (cyclic)", "primeCount", "dynamic", "primeCount"}) {
             System.out.printf("%-15s", column);
         }
@@ -59,9 +61,12 @@ public class evaluation {
         }
     }
 
-    private static void print_performance() {
+    private static void printPerformance() {
+        System.out.println();
+        System.out.println("Performance (1/ms)");
+
         // Print the table header
-        System.out.printf("%-15s", "perf");
+        System.out.printf("%-15s", "threads");
         for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
             System.out.printf("%-15s", type);
         }

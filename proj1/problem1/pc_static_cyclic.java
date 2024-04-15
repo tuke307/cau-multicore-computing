@@ -1,6 +1,6 @@
 import Helper.Functions;
 import Helper.Result;
-import Helper.CyclicPrimeThread;
+import PrimeThreadStrategies.CyclicPrimeThread;
 
 public class pc_static_cyclic {
     private static int num_end = 200000;

@@ -1,6 +1,6 @@
 import Helper.Functions;
 import Helper.Result;
-import Helper.BlockPrimeThread;
+import PrimeThreadStrategies.BlockPrimeThread;
 
 
 public class pc_static_block {

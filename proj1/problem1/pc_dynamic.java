@@ -1,7 +1,7 @@
 
 import Helper.Functions;
 import Helper.Result;
-import Helper.DynamicPrimeThread;
+import PrimeThreadStrategies.DynamicPrimeThread;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class pc_dynamic {
