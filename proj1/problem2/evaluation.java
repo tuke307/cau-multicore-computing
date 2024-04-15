@@ -44,7 +44,7 @@ public class evaluation {
         int[][] b = Functions.readMatrix();
 
         for (int threadCount : threadCounts) {
-            Result result = MatmultD_static.multMatrix(a, b, threadCount);
+            Result result = MatmultD_static_block.multMatrix(a, b, threadCount);
             results.put(threadCount, result);
         }
     }

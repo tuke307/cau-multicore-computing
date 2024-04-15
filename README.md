@@ -1,6 +1,6 @@
 # multicore-computing
 
-deleting class files 
+deleting java compilation files (.class)
 ```bash
 find . -name "*.class" -type f -delete
 ```
@@ -28,7 +28,7 @@ java pc_dynamic.java 4 200000 10
 
 compiling
 ```bash
-javac MatmultD_static.java evaluation.java
+javac MatmultD_static_block.java evaluation.java
 ```
 
 use evaluation script (using 1, 2, 4, 8, 16, 32 threads)
@@ -38,5 +38,5 @@ java evaluation.java < mat1000.txt
 
 use standalone scripts
 ```bash
-java MatmultD_static.java 4 < mat1000.txt
+java MatmultD_static_block.java 4 < mat1000.txt
 ```

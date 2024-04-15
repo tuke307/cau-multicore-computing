@@ -3,10 +3,10 @@ import java.lang.*;
 import Helper.Functions;
 import Helper.Result;
 
-// command-line execution example) java MatmultD_static.java 6 < mat500.txt
+// command-line execution example) java MatmultD_static_block.java 6 < mat500.txt
 // 6 means the number of threads to use
 // < mat500.txt means the file that contains two matrices is given as standard input
-public class MatmultD_static {
+public class MatmultD_static_block {
     private static int NUM_THREAD = 1;
 
     public static void main(String[] args) throws InterruptedException {
