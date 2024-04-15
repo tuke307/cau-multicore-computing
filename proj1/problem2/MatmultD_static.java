@@ -1,127 +1,77 @@
 import java.util.*;
 import java.lang.*;
+import Helper.Functions;
+import Helper.Result;
 
-// command-line execution example) java MatmultD 6 < mat500.txt
+// command-line execution example) java MatmultD_static.java 6 < mat500.txt
 // 6 means the number of threads to use
 // < mat500.txt means the file that contains two matrices is given as standard input
 public class MatmultD_static {
-    private static Scanner sc = new Scanner(System.in);
-    
+    private static int NUM_THREAD = 1;
+
     public static void main(String[] args) throws InterruptedException {
-        int a[][] = readMatrix();
-        int b[][] = readMatrix();
-
-        int[] threadCounts = {1, 2, 4, 6, 8, 10, 12, 14, 16, 32};
-        long[] execTimes = new long[threadCounts.length];
-
-        System.out.println("Thread Count | Execution Time (ms)");
-        System.out.println("-------------|-------------------");
-
-        for (int i = 0; i < threadCounts.length; i++) {
-            int thread_no = threadCounts[i];
-            long startTime = System.currentTimeMillis();
-            int[][] c = multMatrix(a, b, thread_no);
-            long endTime = System.currentTimeMillis();
-
-            execTimes[i] = endTime - startTime;
-
-            System.out.printf("%13d | %17d\n", thread_no, execTimes[i]);
+        if (args.length == 1) {
+            NUM_THREAD = Integer.parseInt(args[0]);
         }
 
-        System.out.println("\nThread Count | Performance (1/ms)");
-        System.out.println("-------------|-------------------");
+        int a[][] = Functions.readMatrix();
+        int b[][] = Functions.readMatrix();
 
-        for (int i = 0; i < threadCounts.length; i++) {
-            int thread_no = threadCounts[i];
-            double performance = 1.0 / execTimes[i];
+        System.out.println("--static block thread handling--");
+        System.out.println("using " + NUM_THREAD + " threads");
 
-            System.out.printf("%13d | %17.4f\n", thread_no, performance);
+        Result result = multMatrix(a, b, NUM_THREAD);
+
+        System.out.println("Program Execution Time: " + result.totalExecutionTime + "ms");
+        for (int i = 0; i < result.threadExecutionTimes.length; i++) {
+            System.out.println("Execution time of thread " + (i + 1) + ": " + result.threadExecutionTimes[i] + "ms");
         }
     }
 
-    public static int[][] readMatrix() {
-        int rows = sc.nextInt();
-        int cols = sc.nextInt();
-        int[][] result = new int[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                result[i][j] = sc.nextInt();
-            }
-        }
-        return result;
-    }
-
-    private static void printMatrix(int[][] mat) {
-        System.out.println("Matrix[" + mat.length + "][" + mat[0].length + "]");
-        int rows = mat.length;
-        int columns = mat[0].length;
-        int sum = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                System.out.printf("%4d ", mat[i][j]);
-                sum += mat[i][j];
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println("Matrix Sum = " + sum + "\n");
-    }
-    
-    public static int[][] multMatrix(int[][] matrixA, int[][] matrixB, int threadCount) throws InterruptedException {
-        // Check if matrixA is empty
+    public static Result multMatrix(int[][] matrixA, int[][] matrixB, int threadCount) {
         if (matrixA.length == 0) {
-            return new int[0][0]; // Return an empty matrix
+            return new Result(0, new long[0], new int[0][0]);
         }
 
-        // Check if the number of columns in matrixA is not equal to the number of rows in matrixB
+        // Check if the number of columns in matrixA is not equal to the number of rows
+        // in matrixB
         if (matrixA[0].length != matrixB.length) {
             return null; // Return null for invalid dimensions
         }
 
-        // Get the common dimension between the two matrices
         int commonDimension = matrixA[0].length;
-
-        // Get the number of rows in matrixA
         int rowsInMatrixA = matrixA.length;
-
-        // Get the number of columns in matrixB
         int colsInMatrixB = matrixB[0].length;
-
-        // Create a new matrix to store the result of the multiplication
         int[][] resultMatrix = new int[rowsInMatrixA][colsInMatrixB];
+        long startTime = System.currentTimeMillis();
+        long[] threadExecutionTimes = new long[threadCount];
 
-        // Create an array of threads
-        Thread[] threads = new Thread[threadCount];
+        MatrixMultiplicationThread[] threads = new MatrixMultiplicationThread[threadCount];
 
         // Loop over each thread
         for (int threadIndex = 0; threadIndex < threadCount; threadIndex++) {
-            // Capture the thread index for use in the thread
             final int currentThreadIndex = threadIndex;
 
-            // Create a new thread
-            threads[threadIndex] = new Thread(() -> {
-                // Each thread processes a subset of the rows of matrixA
-                for (int rowIndex = currentThreadIndex; rowIndex < rowsInMatrixA; rowIndex += threadCount) {
-                    // Multiply the current row of matrixA by each column of matrixB
-                    for (int colIndex = 0; colIndex < colsInMatrixB; colIndex++) {
-                        // Multiply and sum the corresponding elements in the current row and column
-                        for (int elementIndex = 0; elementIndex < commonDimension; elementIndex++) {
-                            resultMatrix[rowIndex][colIndex] += matrixA[rowIndex][elementIndex] * matrixB[elementIndex][colIndex];
-                        }
-                    }
-                }
-            });
-
-            // Start the thread
+            threads[threadIndex] = new MatrixMultiplicationThread(currentThreadIndex, rowsInMatrixA, threadCount,
+                    colsInMatrixB, commonDimension, matrixA, matrixB, resultMatrix);
             threads[threadIndex].start();
         }
 
         // Wait for all threads to finish
-        for (Thread thread : threads) {
-            thread.join();
+        for (MatrixMultiplicationThread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
-        // Return the result matrix
-        return resultMatrix;
+        long endTime = System.currentTimeMillis();
+        long totalExecutionTime = endTime - startTime;
+        for (int i = 0; i < threadCount; i++) {
+            threadExecutionTimes[i] = threads[i].getExecutionTime();
+        }
+
+        return new Result(totalExecutionTime, threadExecutionTimes, resultMatrix);
     }
 }
