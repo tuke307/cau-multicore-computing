@@ -8,9 +8,6 @@ public class pc_dynamic {
     private static int num_end = 200000;
     private static int num_threads = 4;
     private static int num_task_size = 10;
-    private static int counter = 0;
-    private static int sharedCounter = 0;
-    private static final Object lock = new Object();                   
 
     public static void main(String[] args) {
         if (args.length == 3) {
