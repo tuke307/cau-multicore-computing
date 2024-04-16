@@ -34,7 +34,8 @@ public class pc_static_block {
         // static decomposition method: {0-49999}, {50000-99999}, {100000-149999}, {150000-199999}
         for (int i = 0; i < num_threads; i++) {
             final int start = i * workloadPerThread;
-            final int end = (i + 1) * workloadPerThread;
+            // if it's the last thread, assign the remaining workload (if num_end % num_threads > 0)
+            final int end = ( i == num_threads - 1 ) ? num_end : (i + 1) * workloadPerThread;
 
             threads[i] = new BlockPrimeThread(start, end);
             threads[i].start();
