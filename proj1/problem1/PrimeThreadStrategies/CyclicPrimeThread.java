@@ -3,29 +3,31 @@ package PrimeThreadStrategies;
 import Helper.Functions;
 
 public class CyclicPrimeThread extends Thread {
-    private int start;
     private int step;
     private int end;
     private int threads;
+    private int id;
     private int primeCounter = 0;
     private long executionTime = 0;
 
-    public CyclicPrimeThread(int start, int end, int step, int threads) {
-        this.start = start;
+    public CyclicPrimeThread(int end, int step, int threads, int id) {
         this.step = step;
         this.end = end;
         this.threads = threads;
+        this.id = id;
     }
 
     @Override
     public void run() {
         long startTime = System.currentTimeMillis();
 
-        // outer loop: iterate through the range of numbers assigned to this thread
-        for (int i = start; i <= end; i += step * threads) {
-            // inner loop: check if the number is prime
-            for (int j = i; j < i + step && j <= end; j++) {
-                if (Functions.isPrime(j)) {
+        // outer loop: to divide the task into smaller tasks
+        for (int start = id * step; start <= end; start += threads * step) {
+            int taskEnd = Math.min(start + step, end);
+
+            // inner loop: to check for prime numbers
+            for (int currentNumber = start; currentNumber < taskEnd; currentNumber++) {
+                if (Functions.isPrime(currentNumber)) {
                     primeCounter++;
                 }
             }

@@ -35,7 +35,7 @@ public class pc_static_cyclic {
         // {1~10, 41~50, 81~90, ...} {11~20, 51~60, 91~100, ...}, {21~30, 61~70,
         // 101~110, ...}, {31~40, 71~80, 111~120, ...}
         for (int i = 0; i < num_threads; i++) {
-            threads[i] = new CyclicPrimeThread(i * num_task_size + 1, num_end, num_task_size, num_threads);
+            threads[i] = new CyclicPrimeThread(num_end, num_task_size, num_threads, i);
             threads[i].start();
         }
 
