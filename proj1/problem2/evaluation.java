@@ -35,7 +35,7 @@ public class evaluation {
             int thread_no = threadCounts[i];
             Result result = results.get(thread_no);
 
-            System.out.printf("%13d | %17f\n", thread_no, 1 / (result.totalExecutionTime / 1000.0));
+            System.out.printf("%13d | %17f\n", thread_no, (1.0 / result.totalExecutionTime));
         }
     }
 

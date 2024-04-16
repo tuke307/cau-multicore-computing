@@ -6,7 +6,7 @@ import Helper.Result;
 public class evaluation {
     private static int NUM_END = 200000;
     private static int NUM_TASK_SIZE = 10;
-    private static final int[] THREAD_COUNTS = {1, 2, 4, 8, 16, 32};
+    private static final int[] THREAD_COUNTS = { 1, 2, 4, 6, 8, 10, 12, 14, 16, 32 };
     private static Map<String, Map<Integer, Result>> results = new HashMap<>();
 
     public static void main(String[] args) {
@@ -34,7 +34,7 @@ public class evaluation {
     }
 
     private static void calculateAllResults() {
-        for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
+        for (String type : new String[] { "static (block)", "static (cyclic)", "dynamic" }) {
             results.put(type, new HashMap<>());
             for (int threadCount : THREAD_COUNTS) {
                 Result result = calculatePrimesByType(type, threadCount);
@@ -49,7 +49,8 @@ public class evaluation {
 
         // Print the table header
         System.out.printf("%-15s", "threads");
-        for (String column : new String[]{"static (block)", "primeCount", "static (cyclic)", "primeCount", "dynamic", "primeCount"}) {
+        for (String column : new String[] { "static (block)", "primeCount", "static (cyclic)", "primeCount", "dynamic",
+                "primeCount" }) {
             System.out.printf("%-15s", column);
         }
         System.out.println();
@@ -57,7 +58,7 @@ public class evaluation {
         // Print the results for each thread count
         for (int threadCount : THREAD_COUNTS) {
             System.out.printf("%-15d", threadCount);
-            for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
+            for (String type : new String[] { "static (block)", "static (cyclic)", "dynamic" }) {
                 Result result = results.get(type).get(threadCount);
                 System.out.printf("%-15d", result.totalExecutionTime);
                 System.out.printf("%-15d", result.primeCounter);
@@ -72,7 +73,7 @@ public class evaluation {
 
         // Print the table header
         System.out.printf("%-15s", "threads");
-        for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
+        for (String type : new String[] { "static (block)", "static (cyclic)", "dynamic" }) {
             System.out.printf("%-15s", type);
         }
         System.out.println();
@@ -80,9 +81,9 @@ public class evaluation {
         // Print the results for each thread count
         for (int threadCount : THREAD_COUNTS) {
             System.out.printf("%-15d", threadCount);
-            for (String type : new String[]{"static (block)", "static (cyclic)", "dynamic"}) {
+            for (String type : new String[] { "static (block)", "static (cyclic)", "dynamic" }) {
                 Result result = results.get(type).get(threadCount);
-                System.out.printf("%-15f", 1 / (result.totalExecutionTime / 1000.0));
+                System.out.printf("%-15f", (1.0 / result.totalExecutionTime));
             }
             System.out.println();
         }
