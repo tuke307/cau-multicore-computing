@@ -21,7 +21,9 @@ public class CyclicPrimeThread extends Thread {
     public void run() {
         long startTime = System.currentTimeMillis();
 
+        // outer loop: iterate through the range of numbers assigned to this thread
         for (int i = start; i <= end; i += step * threads) {
+            // inner loop: check if the number is prime
             for (int j = i; j < i + step && j <= end; j++) {
                 if (Functions.isPrime(j)) {
                     primeCounter++;
