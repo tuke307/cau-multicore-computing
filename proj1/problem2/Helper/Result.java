@@ -7,11 +7,11 @@ import java.lang.*;
 public class Result {
     public long totalExecutionTime;
     public long[] threadExecutionTimes;
-    public int[][] a;
+    public int[][] resultMatrix;
 
-    public Result(long totalExecutionTime, long[] threadExecutionTimes, int[][] a) {
+    public Result(long totalExecutionTime, long[] threadExecutionTimes, int[][] resultMatrix) {
         this.totalExecutionTime = totalExecutionTime;
         this.threadExecutionTimes = threadExecutionTimes;
-        this.a = a;
+        this.resultMatrix = resultMatrix;
     }
 }

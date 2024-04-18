@@ -18,19 +18,28 @@ public class Functions {
         return result;
     }
 
-    public static void printMatrix(int[][] mat) {
-        System.out.println("Matrix[" + mat.length + "][" + mat[0].length + "]");
+    public static int calculateMatrix(int[][] mat, boolean print) {
+        if (print)
+            System.out.println("Matrix[" + mat.length + "][" + mat[0].length + "]");
+
         int rows = mat.length;
         int columns = mat[0].length;
         int sum = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                System.out.printf("%4d ", mat[i][j]);
+                if (print)
+                    System.out.printf("%4d ", mat[i][j]);
                 sum += mat[i][j];
             }
-            System.out.println();
+            if (print)
+                System.out.println();
         }
-        System.out.println();
-        System.out.println("Matrix Sum = " + sum + "\n");
+        if (print) {
+            System.out.println();
+            System.out.println("Matrix Sum = " + sum + "\n");
+        }
+
+        return sum;
+
     }
 }

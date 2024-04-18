@@ -22,6 +22,8 @@ public class MatmultD_static_block {
 
         Result result = multMatrix(a, b, NUM_THREAD);
 
+        Functions.calculateMatrix(result.resultMatrix, true);
+
         System.out.println("Program Execution Time: " + result.totalExecutionTime + "ms");
         for (int i = 0; i < result.threadExecutionTimes.length; i++) {
             System.out.println("Execution time of thread " + (i + 1) + ": " + result.threadExecutionTimes[i] + "ms");

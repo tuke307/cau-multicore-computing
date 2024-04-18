@@ -16,14 +16,15 @@ public class evaluation {
     }
 
     public static void printExecTime() {
-        System.out.println("Thread Count | Execution Time (ms)");
-        System.out.println("-------------|-------------------");
+        System.out.println("Thread Count | Execution Time (ms) | Sum");
+        System.out.println("-------------|---------------------|----------------");
 
         for (int i = 0; i < threadCounts.length; i++) {
             int thread_no = threadCounts[i];
             Result result = results.get(thread_no);
+            int sum = Functions.calculateMatrix(result.resultMatrix, false);
 
-            System.out.printf("%13d | %17d\n", thread_no, result.totalExecutionTime);
+            System.out.printf("%13d | %17d | %17d\n", thread_no, result.totalExecutionTime, sum);
         }
     }
 
