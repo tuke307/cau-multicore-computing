@@ -6,19 +6,11 @@ class ParkingGarage {
 
     public ParkingGarage(int places) {
         parkingSlots = new ArrayBlockingQueue<Integer>(places);
-
-        for (int i = 0; i < places; i++) {
-            try {
-                parkingSlots.put(i);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
     }
 
     public void enter() {
         try {
-            parkingSlots.take();
+            parkingSlots.put(1);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -26,7 +18,7 @@ class ParkingGarage {
 
     public void leave() {
         try {
-            parkingSlots.put(1);
+            parkingSlots.take();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
