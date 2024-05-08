@@ -1,62 +1,112 @@
-package proj2.prob1;
-
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-
-import proj2.prob1.ParkingGarage;
 
 class ParkingGarage {
     private final BlockingQueue<Integer> parkingSlots;
 
     public ParkingGarage(int places) {
-        parkingSlots = new ArrayBlockingQueue<>(places);
+        parkingSlots = new ArrayBlockingQueue<Integer>(places);
+
         for (int i = 0; i < places; i++) {
             try {
-                parkingSlots.put(i); // Pre-fill the queue representing free parking spots
+                parkingSlots.put(i);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // Handle thread interruption
+                Thread.currentThread().interrupt();
             }
         }
     }
 
-    public void enter(int carNumber) {
+    public void enter() {
         try {
-            System.out.println("Car " + carNumber + ": trying to enter");
-            parkingSlots.take(); // Block if no spots are available
-            System.out.println("Car " + carNumber + ": just entered");
+            parkingSlots.take();
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // Properly handle interruption
+            Thread.currentThread().interrupt();
         }
     }
 
-    public void leave(int carNumber) {
+    public void leave() {
         try {
-            System.out.println("Car " + carNumber + ": about to leave");
-            parkingSlots.put(carNumber); // Release the parking spot back to the pool
-            System.out.println("Car " + carNumber + ": have been left");
+            parkingSlots.put(1);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
 }
 
+class Car extends Thread {
+    private final ParkingGarage parkingGarage;
+
+    public Car(String name, ParkingGarage p) {
+        super(name);
+        this.parkingGarage = p;
+        start();
+    }
+
+    private void tryingEnter() {
+        System.out.println(getName() + ": trying to enter");
+    }
+
+    private void justEntered() {
+        System.out.println(getName() + ": just entered");
+    }
+
+    private void aboutToLeave() {
+        System.out.println(getName() + ":                                     about to leave");
+    }
+
+    private void left() {
+        System.out.println(getName() + ":                                     have been left");
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                sleep((int) (Math.random() * 10000)); // drive before parking
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            tryingEnter();
+            parkingGarage.enter();
+            justEntered();
+
+            try {
+                sleep((int) (Math.random() * 20000)); // stay within the parking garage
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            
+            aboutToLeave();
+            parkingGarage.leave();
+            left();
+        }
+    }
+}
+
 public class ParkingBlockingQueue {
+    private static int parkingPlaces = 7;
+    private static int carNumber = 10;
+
     public static void main(String[] args) {
-        ParkingGarage garage = new ParkingGarage(7); // Assume 7 parking places
+        if (args.length > 0) {
+            try {
+                parkingPlaces = Integer.parseInt(args[0]);
+                carNumber = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                System.err.println("Argument must be an integer");
+                System.exit(1);
+            }
+        }
+
+        System.out.println("Parking Garage Simulation using BlockingQueue");
+        System.out.println("Number of parking places: " + parkingPlaces);
+        System.out.println("Number of cars: " + carNumber);
+
+        ParkingGarage garage = new ParkingGarage(parkingPlaces);
 
         // Simulating multiple cars trying to enter and leave the garage
-        // 7 cars will enter and park, then each car will leave after 1 second
-        for (int i = 1; i <= 10; i++) {
-            final int carNumber = i;
-            new Thread(() -> garage.enter(carNumber)).start();
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000); // Simulating the duration a car remains parked
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                garage.leave(carNumber);
-            }).start();
+        for (int i = 1; i <= carNumber; i++) {
+            new Car("Car " + i, garage);
         }
     }
 }

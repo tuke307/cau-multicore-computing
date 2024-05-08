@@ -1,48 +1,99 @@
-package proj2.prob2;
-
 import java.util.concurrent.Semaphore;
 
 class ParkingGarage {
     private final Semaphore semaphore;
 
     public ParkingGarage(int places) {
-        // Initialize the semaphore with the number of available places
         semaphore = new Semaphore(places);
     }
 
-    public void enter(int carNumber) {
+    public void enter() {
         try {
-            System.out.println("Car " + carNumber + ": trying to enter");
-            semaphore.acquire(); // Attempt to acquire a permit to park, blocks if none available
-            System.out.println("Car " + carNumber + ": just entered");
+            semaphore.acquire();
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // Properly handle interruption
+            Thread.currentThread().interrupt();
         }
     }
 
-    public void leave(int carNumber) {
-        System.out.println("Car " + carNumber + ": about to leave");
-        semaphore.release(); // Release the permit, allowing another car to park
-        System.out.println("Car " + carNumber + ": have been left");
+    public void leave() {
+        semaphore.release();
+    }
+}
+
+class Car extends Thread {
+    private final ParkingGarage parkingGarage;
+
+    public Car(String name, ParkingGarage p) {
+        super(name);
+        this.parkingGarage = p;
+        start();
+    }
+
+    private void tryingEnter() {
+        System.out.println(getName() + ": trying to enter");
+    }
+
+    private void justEntered() {
+        System.out.println(getName() + ": just entered");
+    }
+
+    private void aboutToLeave() {
+        System.out.println(getName() + ":                                     about to leave");
+    }
+
+    private void left() {
+        System.out.println(getName() + ":                                     have been left");
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                sleep((int) (Math.random() * 10000)); // drive before parking
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            tryingEnter();
+            parkingGarage.enter();
+            justEntered();
+
+            try {
+                sleep((int) (Math.random() * 20000)); // stay within the parking garage
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            
+            aboutToLeave();
+            parkingGarage.leave();
+            left();
+        }
     }
 }
 
 public class ParkingSemaphore {
+    private static int parkingPlaces = 7;
+    private static int carNumber = 10;
+
     public static void main(String[] args) {
-        ParkingGarage garage = new ParkingGarage(7); // Assume 7 parking places
+        if (args.length > 0) {
+            try {
+                parkingPlaces = Integer.parseInt(args[0]);
+                carNumber = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                System.err.println("Argument must be an integer");
+                System.exit(1);
+            }
+        }
+
+        System.out.println("Parking Garage Simulation using Semaphore");
+        System.out.println("Number of parking places: " + parkingPlaces);
+        System.out.println("Number of cars: " + carNumber);
+
+        ParkingGarage garage = new ParkingGarage(parkingPlaces);
 
         // Simulating multiple cars trying to enter and leave the garage
-        for (int i = 1; i <= 10; i++) {
-            final int carNumber = i;
-            new Thread(() -> garage.enter(carNumber)).start();
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000); // Simulating the duration a car remains parked
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                garage.leave(carNumber);
-            }).start();
+        for (int i = 1; i <= carNumber; i++) {
+            new Car("Car " + i, garage);
         }
     }
 }
