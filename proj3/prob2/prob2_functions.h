@@ -1,6 +1,5 @@
-// PROB2.h
-#ifndef PROB2_H
-#define PROB2_H
+#ifndef PROB2_FUNCTIONS_H
+#define PROB2_FUNCTIONS_H
 
 /**
  * Calculates the value of pi using the Monte Carlo method.
@@ -18,4 +17,4 @@
  */
 void calculate_pi(int scheduling_type, int chunk_size, int num_threads, double *pi, double *execution_time);
 
-#endif // PROB2_H
+#endif

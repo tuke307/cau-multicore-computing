@@ -1,21 +1,34 @@
 #include <stdio.h>
-#include "prob2.h"
+#include "prob2_functions.h"
 
 int main(int argc, char *argv[]) {
-    int scheduling_types[] = {1, 2, 3}; // static, dynamic, guided
+    int scheduling_types[] = {1, 2, 3}; // 1=static, 2=dynamic, 3=guided
     int num_threads[] = {1, 2, 4, 6, 8, 10, 12, 14, 16};
     int chunk_sizes[] = {1, 5, 10, 100};
+    const char* sched_names[] = {"static", "dynamic", "guided"};
 
+    // Define column widths based on the largest header, which is "Execution Time (ms)"
+    int schedWidth = 12; // "Scheduling"
+    int chunkWidth = 10; // "Chunk Size"
+    int threadWidth = 10; // Enough for "Execution Time (ms)" to be the guide for all numeric data
+
+    // Print the headers
+    printf("%-*s | %-*s | ", schedWidth, "Scheduling", chunkWidth, "Chunk Size");
+    for (int n = 0; n < sizeof(num_threads)/sizeof(num_threads[0]); n++) {
+        printf("%-*d |", threadWidth, num_threads[n]);
+    }
+    printf("\n");
+
+    // Print data rows
     for (int i = 0; i < sizeof(scheduling_types)/sizeof(scheduling_types[0]); i++) {
         for (int j = 0; j < sizeof(chunk_sizes)/sizeof(chunk_sizes[0]); j++) {
+            printf("%-*s | %-*d | ", schedWidth, sched_names[i], chunkWidth, chunk_sizes[j]);
             for (int k = 0; k < sizeof(num_threads)/sizeof(num_threads[0]); k++) {
-                double execution_time;
-                int prime_count;
-                setup(scheduling_types[i], chunk_sizes[j], num_threads[k], &prime_count, &execution_time);
-                printf("Scheduling type: %d, Chunk size: %d, Number of threads: %d\n", scheduling_types[i], chunk_sizes[j], num_threads[k]);
-                printf("Execution time: %.2f milliseconds\n", execution_time * 1000);
-                printf("Number of prime numbers: %d\n", prime_count);
+                double pi, execution_time;
+                calculate_pi(scheduling_types[i], chunk_sizes[j], num_threads[k], &pi, &execution_time);
+                printf("%-*f |", threadWidth, execution_time * 1000);
             }
+            printf("\n");
         }
     }
 

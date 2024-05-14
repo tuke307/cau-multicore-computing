@@ -1,19 +1,6 @@
 {
     "tasks": [
         {
-            "type": "shell",
-            "label": "build and run",
-            "dependsOn": [
-                "C/C++: gcc-14 build active file"
-            ],
-            "command": "${fileDirname}/${fileBasenameNoExtension}.out",
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-        },
-        {
             "type": "cppbuild",
             "label": "C/C++: gcc-14 build active file",
             "command": "/opt/homebrew/opt/gcc/bin/gcc-14",
@@ -23,8 +10,12 @@
                 "-fopenmp",
                 "${file}",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}.out"
+                "${fileDirname}/${fileBasenameNoExtension}"
             ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "options": {
                 "cwd": "${fileDirname}"
             },
