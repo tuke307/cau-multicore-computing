@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "gcc mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/include",
+                "$(brew --prefix gcc)"
+            ],
+            "defines": [],
+            "compilerPath": "$(brew --prefix gcc)/bin/gcc-14",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "gcc-arm64" // architecture: x64, x86, arm64,
+        },
+    ],
+    "version": 4
+}

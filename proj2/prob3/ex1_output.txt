@@ -1,0 +1,34 @@
+tonymeissner@MacBook-Pro-von-Tony prob3 % javac *.java
+tonymeissner@MacBook-Pro-von-Tony prob3 % java ex1 3  
+BlockingQueue Producer-Consumer Simulation
+Number of items: 3
+Producer: Item 1 added to the queue
+Consumer: Consumed item 1
+Producer: Item 2 added to the queue
+Producer: Item 3 added to the queue
+Consumer: Consumed item 2
+Consumer: Consumed item 3
+tonymeissner@MacBook-Pro-von-Tony prob3 % java ex1 10
+BlockingQueue Producer-Consumer Simulation
+Number of items: 10
+Producer: Item 1 added to the queue
+Consumer: Consumed item 1
+Producer: Item 2 added to the queue
+Producer: Item 3 added to the queue
+Producer: Item 4 added to the queue
+Consumer: Consumed item 2
+Producer: Item 5 added to the queue
+Producer: Item 6 added to the queue
+Consumer: Consumed item 3
+Producer: Item 7 added to the queue
+Producer: Item 8 added to the queue
+Producer: Item 9 added to the queue
+Producer: Item 10 added to the queue
+Consumer: Consumed item 4
+Consumer: Consumed item 5
+Consumer: Consumed item 6
+Consumer: Consumed item 7
+Consumer: Consumed item 8
+Consumer: Consumed item 9
+Consumer: Consumed item 10
+tonymeissner@MacBook-Pro-von-Tony prob3 % 

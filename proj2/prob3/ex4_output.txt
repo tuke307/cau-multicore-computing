@@ -1,0 +1,83 @@
+tonymeissner@MacBook-Pro-von-Tony prob3 % javac *.java  
+tonymeissner@MacBook-Pro-von-Tony prob3 % java ex4 5 11 
+CyclicBarrier Reader-Writer Simulation
+Number of readers: 5
+Number of writers: 11
+initial shared value: 0
+Writer 29: waiting at barrier
+Reader 24: waiting at barrier
+Writer 27: waiting at barrier
+Reader 23: waiting at barrier
+Writer 30: waiting at barrier
+Writer 25: waiting at barrier
+Writer 31: waiting at barrier
+Reader 20: waiting at barrier
+Reader 22: waiting at barrier
+Writer 26: waiting at barrier
+Writer 32: waiting at barrier
+Writer 33: waiting at barrier
+Reader 21: waiting at barrier
+Writer 35: waiting at barrier
+Writer 28: waiting at barrier
+Writer 34: waiting at barrier
+Barrier reached
+Reader 20: 6
+Reader 24: 2
+Reader 22: 6
+Reader 23: 3
+Reader 21: 9
+tonymeissner@MacBook-Pro-von-Tony prob3 % java ex4 12 24
+CyclicBarrier Reader-Writer Simulation
+Number of readers: 12
+Number of writers: 24
+initial shared value: 0
+Writer 44: waiting at barrier
+Reader 25: waiting at barrier
+Writer 52: waiting at barrier
+Writer 46: waiting at barrier
+Reader 23: waiting at barrier
+Writer 50: waiting at barrier
+Reader 31: waiting at barrier
+Writer 43: waiting at barrier
+Writer 42: waiting at barrier
+Writer 32: waiting at barrier
+Writer 51: waiting at barrier
+Writer 36: waiting at barrier
+Reader 30: waiting at barrier
+Writer 48: waiting at barrier
+Writer 37: waiting at barrier
+Reader 27: waiting at barrier
+Writer 41: waiting at barrier
+Writer 40: waiting at barrier
+Reader 24: waiting at barrier
+Reader 29: waiting at barrier
+Writer 34: waiting at barrier
+Writer 45: waiting at barrier
+Writer 49: waiting at barrier
+Reader 22: waiting at barrier
+Writer 33: waiting at barrier
+Reader 26: waiting at barrier
+Writer 47: waiting at barrier
+Writer 38: waiting at barrier
+Reader 21: waiting at barrier
+Reader 20: waiting at barrier
+Writer 39: waiting at barrier
+Reader 28: waiting at barrier
+Writer 35: waiting at barrier
+Writer 55: waiting at barrier
+Writer 53: waiting at barrier
+Writer 54: waiting at barrier
+Barrier reached
+Reader 22: 17
+Reader 25: 2
+Reader 21: 20
+Reader 27: 12
+Reader 26: 17
+Reader 20: 20
+Reader 31: 5
+Reader 29: 14
+Reader 23: 4
+Reader 30: 10
+Reader 28: 21
+Reader 24: 14
+tonymeissner@MacBook-Pro-von-Tony prob3 % 

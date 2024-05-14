@@ -1,0 +1,58 @@
+tonymeissner@MacBook-Pro-von-Tony prob3 % javac *.java  
+tonymeissner@MacBook-Pro-von-Tony prob3 % java ex3 4 9  
+AtomicInteger Reader-Writer Simulation
+Initial value: 0
+Number of readers: 4
+Number of writers: 9
+Writer 29: Incremented value to 6
+Reader 20: Read value 5
+Writer 30: Incremented value to 2
+Reader 23: Read value 0
+Writer 26: Incremented value to 4
+Writer 27: Incremented value to 5
+Writer 32: Incremented value to 3
+Writer 25: Incremented value to 8
+Reader 21: Read value 5
+Writer 24: Incremented value to 1
+Writer 31: Incremented value to 0
+Reader 22: Read value 6
+Writer 28: Incremented value to 7
+tonymeissner@MacBook-Pro-von-Tony prob3 % java ex3 11 22
+AtomicInteger Reader-Writer Simulation
+Initial value: 0
+Number of readers: 11
+Number of writers: 22
+Reader 20: Read value 22
+Reader 28: Read value 22
+Writer 42: Incremented value to 18
+Writer 43: Incremented value to 9
+Reader 29: Read value 16
+Writer 44: Incremented value to 11
+Writer 34: Incremented value to 12
+Writer 48: Incremented value to 5
+Writer 49: Incremented value to 17
+Writer 37: Incremented value to 2
+Reader 22: Read value 21
+Writer 47: Incremented value to 10
+Writer 35: Incremented value to 14
+Writer 50: Incremented value to 6
+Writer 52: Incremented value to 3
+Reader 21: Read value 8
+Reader 24: Read value 16
+Reader 25: Read value 21
+Writer 38: Incremented value to 1
+Writer 45: Incremented value to 20
+Writer 40: Incremented value to 16
+Reader 26: Read value 16
+Writer 39: Incremented value to 13
+Writer 41: Incremented value to 0
+Writer 33: Incremented value to 21
+Writer 36: Incremented value to 15
+Writer 46: Incremented value to 8
+Writer 51: Incremented value to 7
+Reader 27: Read value 5
+Writer 32: Incremented value to 19
+Reader 23: Read value 1
+Writer 31: Incremented value to 4
+Reader 30: Read value 16
+tonymeissner@MacBook-Pro-von-Tony prob3 % 

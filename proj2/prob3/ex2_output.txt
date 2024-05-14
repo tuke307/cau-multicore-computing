@@ -1,0 +1,55 @@
+tonymeissner@MacBook-Pro-von-Tony prob3 % javac *.java
+tonymeissner@MacBook-Pro-von-Tony prob3 % java ex2 3 10 
+ReadWriteLock Reader-Writer Simulation
+Initial value: 0
+Number of readers: 3
+Number of writers: 10
+Writer 32: Incremented value to 1
+Writer 25: Incremented value to 2
+Writer 27: Incremented value to 3
+Reader 21: Read value 3
+Reader 20: Read value 3
+Writer 28: Incremented value to 4
+Writer 31: Incremented value to 5
+Writer 29: Incremented value to 6
+Writer 23: Incremented value to 7
+Writer 30: Incremented value to 8
+Writer 24: Incremented value to 9
+Reader 22: Read value 9
+Writer 26: Incremented value to 10
+tonymeissner@MacBook-Pro-von-Tony prob3 % java ex2 10 20
+ReadWriteLock Reader-Writer Simulation
+Initial value: 0
+Number of readers: 10
+Number of writers: 20
+Reader 29: Read value 0
+Writer 44: Incremented value to 1
+Writer 48: Incremented value to 2
+Reader 27: Read value 2
+Reader 28: Read value 2
+Writer 39: Incremented value to 3
+Reader 24: Read value 3
+Writer 42: Incremented value to 4
+Writer 31: Incremented value to 5
+Reader 23: Read value 5
+Reader 20: Read value 5
+Writer 46: Incremented value to 6
+Writer 38: Incremented value to 7
+Writer 37: Incremented value to 8
+Writer 47: Incremented value to 9
+Writer 43: Incremented value to 10
+Writer 30: Incremented value to 11
+Writer 36: Incremented value to 12
+Reader 26: Read value 12
+Writer 40: Incremented value to 13
+Writer 45: Incremented value to 14
+Reader 21: Read value 14
+Writer 35: Incremented value to 15
+Writer 32: Incremented value to 16
+Reader 25: Read value 16
+Writer 34: Incremented value to 17
+Reader 22: Read value 17
+Writer 33: Incremented value to 18
+Writer 49: Incremented value to 19
+Writer 41: Incremented value to 20
+tonymeissner@MacBook-Pro-von-Tony prob3 % 
