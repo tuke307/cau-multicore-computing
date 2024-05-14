@@ -1,26 +1,8 @@
-/**
- * @file prob1.c
- * @brief This program calculates the number of prime numbers between 1 and 200000 using OpenMP for parallelization.
- *
- * The program takes two command-line arguments: the scheduling type and the number of threads.
- * The scheduling types are as follows:
- * 1: Static scheduling with default chunk size
- * 2: Dynamic scheduling with default chunk size
- * 3: Static scheduling with chunk size 10
- * 4: Dynamic scheduling with chunk size 10
- *
- * The number of threads can be any integer value, but typically it should be a value that matches the number of cores available on the machine.
- *
- * The program prints the number of prime numbers found and the execution time.
- *
- * Usage: prob1.out scheduling_type _of_thread
- */
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
 #include <time.h>
+#include "prob1.h"
 
 // Function to check if a number is prime
 int is_prime(int n) {
@@ -32,25 +14,23 @@ int is_prime(int n) {
     return 1;
 }
 
-int main(int argc, char *argv[]) {
+double setup(int argc, char *argv[], int *scheduling_type, int *num_threads) {
     // Check if command line arguments are correct
     if (argc != 3) {
         fprintf(stderr, "Usage: %s scheduling_type# #_of_threads\n", argv[0]);
         return 1;
     }
 
-    int scheduling_type = atoi(argv[1]);
-    int num_threads = atoi(argv[2]);
-    int count = 0;
-    double start_time, end_time;
+    *scheduling_type = atoi(argv[1]);
+    *num_threads = atoi(argv[2]);
 
-    printf("Number of threads: %d\n", num_threads);
+    printf("Number of threads: %d\n", *num_threads);
 
     // Set the number of threads
-    omp_set_num_threads(num_threads);
+    omp_set_num_threads(*num_threads);
 
     // Choose the scheduling type based on the command line argument
-    switch(scheduling_type) {
+    switch(*scheduling_type) {
         case 1:
             printf("static with default chunk size\n");
             omp_set_schedule(omp_sched_static, 0);
@@ -72,6 +52,9 @@ int main(int argc, char *argv[]) {
             return 1;
     }
 
+    int count = 0;
+    double start_time, end_time;
+
     start_time = omp_get_wtime();
     
     // Parallelize the loop
@@ -85,7 +68,20 @@ int main(int argc, char *argv[]) {
     end_time = omp_get_wtime();
 
     printf("Number of primes: %d\n", count);
-    printf("Execution time: %.2f seconds\n", end_time - start_time);
+
+    return end_time - start_time;
+}
+
+int main(int argc, char *argv[]) {
+    int scheduling_type, num_threads;
+    double execution_time;
+
+    execution_time = setup(argc, argv, &scheduling_type, &num_threads);
+    if (execution_time < 0) {
+        return 1;
+    }
+
+    printf("Execution time: %.2f seconds\n", execution_time);
 
     return 0;
 }
