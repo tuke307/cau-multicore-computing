@@ -1,21 +1,22 @@
-#include "prob1.h"
 #include <stdio.h>
+#include "prob1_functions.h"
 
 int main(int argc, char *argv[]) {
-    int scheduling_type, num_threads;
+    int num_threads, prime_count;
     double execution_time;
+    int scheduling_types[] = {1, 2, 3, 4}; // static(0), dynamic(0), static(10), dynamic(10)
     int threads[] = {1, 2, 4, 6, 8, 10, 12, 14, 16};
     int num_tests = sizeof(threads) / sizeof(threads[0]);
 
-    printf("Threads\tType 1\tType 2\tType 3\tType 4\n");
+    printf("Threads\tstatic (0)\tdynamic (0)\tstatic (10)\tdynamic (10)\n");
 
     for (int i = 0; i < num_tests; i++) {
         num_threads = threads[i];
         printf("%d\t", num_threads);
 
-        for (scheduling_type = 1; scheduling_type <= 4; scheduling_type++) {
-            execution_time = setup(argc, argv, &scheduling_type, &num_threads);
-            printf("%.2f\t", execution_time);
+        for (int i = 0; i < sizeof(scheduling_types)/sizeof(scheduling_types[0]); i++) {
+            setup(scheduling_types[i], num_threads, &prime_count, &execution_time);
+            printf("%.2f\t", execution_time * 1000);
         }
 
         printf("\n");
