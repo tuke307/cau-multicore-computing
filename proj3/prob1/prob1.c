@@ -33,6 +33,12 @@ int is_prime(int n) {
 }
 
 int main(int argc, char *argv[]) {
+    // Check if command line arguments are correct
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s scheduling_type# #_of_threads\n", argv[0]);
+        return 1;
+    }
+
     int scheduling_type = atoi(argv[1]);
     int num_threads = atoi(argv[2]);
     int count = 0;
