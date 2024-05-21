@@ -29,8 +29,8 @@ void calculate_pi(int scheduling_type, int chunk_size, int num_threads, double *
     double start_time = omp_get_wtime();
 
     // Parallel loop
-    #pragma omp parallel for reduction(+:sum)
-    for (long i = 0; i < chunk_size; i++) {
+    #pragma omp parallel for schedule(runtime) reduction(+:sum)
+    for (long i = 0; i < 10000000; i++) {
         double x = (i + 0.5) * step;
         sum = sum + 4.0 / (1.0 + x * x);
     }
