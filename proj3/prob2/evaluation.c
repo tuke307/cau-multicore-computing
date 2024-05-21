@@ -7,26 +7,24 @@ int main(int argc, char *argv[]) {
     int chunk_sizes[] = {1, 5, 10, 100};
     const char* sched_names[] = {"static", "dynamic", "guided"};
 
-    // Define column widths based on the largest header, which is "Execution Time (ms)"
-    int schedWidth = 12; // "Scheduling"
-    int chunkWidth = 10; // "Chunk Size"
-    int threadWidth = 10; // Enough for "Execution Time (ms)" to be the guide for all numeric data
+    // Redirect stdout to a file
+    freopen("output.csv", "w", stdout);
 
     // Print the headers
-    printf("%-*s | %-*s | ", schedWidth, "Scheduling", chunkWidth, "Chunk Size");
+    printf("%s,%s,", "Scheduling", "Chunk Size");
     for (int n = 0; n < sizeof(num_threads)/sizeof(num_threads[0]); n++) {
-        printf("%-*d |", threadWidth, num_threads[n]);
+        printf("%d,", num_threads[n]);
     }
     printf("\n");
 
     // Print data rows
     for (int i = 0; i < sizeof(scheduling_types)/sizeof(scheduling_types[0]); i++) {
         for (int j = 0; j < sizeof(chunk_sizes)/sizeof(chunk_sizes[0]); j++) {
-            printf("%-*s | %-*d | ", schedWidth, sched_names[i], chunkWidth, chunk_sizes[j]);
+            printf("%s,%d,", sched_names[i], chunk_sizes[j]);
             for (int k = 0; k < sizeof(num_threads)/sizeof(num_threads[0]); k++) {
                 double pi, execution_time;
                 calculate_pi(scheduling_types[i], chunk_sizes[j], num_threads[k], &pi, &execution_time);
-                printf("%-*f |", threadWidth, execution_time * 1000);
+                printf("%.2f,", execution_time * 1000);
             }
             printf("\n");
         }
