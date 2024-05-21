@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
             for (int k = 0; k < sizeof(num_threads)/sizeof(num_threads[0]); k++) {
                 double pi, execution_time;
                 calculate_pi(scheduling_types[i], chunk_sizes[j], num_threads[k], &pi, &execution_time);
-                printf("%.2f,", execution_time * 1000);
+                printf("%.4f,", execution_time * 1000);
             }
             printf("\n");
         }

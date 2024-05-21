@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
             int prime_count;
             // Assuming setup function calculates and updates execution_time
             setup(scheduling_types[i], threads[j], &prime_count, &execution_time);
-            printf("%.2f,", execution_time * 1000);
+            printf("%.4f,", execution_time * 1000);
         }
         printf("\n");
     }
