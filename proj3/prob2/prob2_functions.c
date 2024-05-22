@@ -3,8 +3,10 @@
 #include <omp.h>
 #include <time.h>
 
+#define num_steps 10000000
+
 void calculate_pi(int scheduling_type, int chunk_size, int num_threads, double *pi, double *execution_time) {
-    double step, sum = 0.0;
+    double x, step, sum = 0.0;
 
     // Set the number of threads
     omp_set_num_threads(num_threads);
@@ -25,13 +27,13 @@ void calculate_pi(int scheduling_type, int chunk_size, int num_threads, double *
             return;
     }
 
-    step = 1.0 / (double) chunk_size;
+    step = 1.0 / (double) num_steps;
     double start_time = omp_get_wtime();
 
     // Parallel loop
-    #pragma omp parallel for schedule(runtime) reduction(+:sum)
-    for (long i = 0; i < 10000000; i++) {
-        double x = (i + 0.5) * step;
+    #pragma omp parallel for schedule(runtime) reduction(+:sum) private(x)
+    for (long i = 0; i < num_steps; i++) {
+        x = (i + 0.5) * step;
         sum = sum + 4.0 / (1.0 + x * x);
     }
 
