@@ -1,6 +1,7 @@
 # project 3
 
 ## problem 1
+
 the program use “schedule(static)” using 8 threads
 ```bash
 gcc-14 -fopenmp -c prob1_functions.c -o prob1_functions.o
