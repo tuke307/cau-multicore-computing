@@ -16,3 +16,10 @@ cuda raytracing: jupyter notebook
 ```
 
 ## problem 2
+
+cuda raytracing: jupyter notebook
+```bash
+%%writefile thrust_ex.cu
+!nvcc -o thrust_ex.exe thrust_ex.cu
+!./thrust_ex.exe
+```
