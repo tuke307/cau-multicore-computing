@@ -3,7 +3,7 @@
 * [project 1 (Java)](proj1/README.md)
 * [project 2 (Java)](proj2/README.md)
 * [project 3 (C)](proj3/README.md)
-* [project 4 (C++, CUDA)](proj4/README.md)
+* [project 4 (C, CUDA)](proj4/README.md)
 
 ## java
 deleting java compilation files (.class)
