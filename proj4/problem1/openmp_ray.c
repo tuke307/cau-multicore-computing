@@ -15,53 +15,10 @@
 
 struct Sphere
 {
-    float r, g, b;                              // red, green, and blue color components of the sphere
-    float radius;                               // radius of the sphere
-    float x, y, z;                              // coordinates of the center of the sphere.
-    float (*hit)(float ox, float oy, float *n); // pointer to a function that calculates the intersection of a ray with the sphere.
+    float r, g, b; // red, green, and blue color components of the sphere
+    float radius;  // radius of the sphere
+    float x, y, z; // coordinates of the center of the sphere.
 };
-
-/**
- * This function calculates the color of a pixel at (x, y) by ray tracing.
- *
- * @param x The x-coordinate of the pixel.
- * @param y The y-coordinate of the pixel.
- * @param s A pointer to an array of Sphere structs which represent the spheres in the scene.
- * @param ptr A pointer to an array where the color of the pixel will be stored.
- *
- * The color of the pixel is determined by the color of the sphere that the ray from the pixel intersects first.
- * If the ray does not intersect any sphere, the pixel is black.
- * The color is stored in the ptr array in RGBA format, with each component as an unsigned char (0-255).
- */
-void kernel(int x, int y, struct Sphere *s, unsigned char *ptr)
-{
-    int offset = x + y * DIM;
-    float ox = (x - DIM / 2);
-    float oy = (y - DIM / 2);
-
-    // printf("x:%d, y:%d, ox:%f, oy:%f\n",x,y,ox,oy);
-
-    float r = 0, g = 0, b = 0;
-    float maxz = -INF;
-    for (int i = 0; i < SPHERES; i++)
-    {
-        float n;
-        float t = s[i].hit(ox, oy, &n);
-        if (t > maxz)
-        {
-            float fscale = n;
-            r = s[i].r * fscale;
-            g = s[i].g * fscale;
-            b = s[i].b * fscale;
-            maxz = t;
-        }
-    }
-
-    ptr[offset * 4 + 0] = (int)(r * 255);
-    ptr[offset * 4 + 1] = (int)(g * 255);
-    ptr[offset * 4 + 2] = (int)(b * 255);
-    ptr[offset * 4 + 3] = 255;
-}
 
 /**
  * This function calculates the intersection of a ray with a sphere.
@@ -84,6 +41,48 @@ float hit(struct Sphere *sphere, float ox, float oy, float *n)
         return dz + sphere->z;
     }
     return -INF;
+}
+
+/**
+ * This function calculates the color of a pixel at (x, y) by ray tracing.
+ *
+ * @param s A pointer to an array of Sphere structs which represent the spheres in the scene.
+ * @param x The x-coordinate of the pixel.
+ * @param y The y-coordinate of the pixel.
+ * @param ptr A pointer to an array where the color of the pixel will be stored.
+ *
+ * The color of the pixel is determined by the color of the sphere that the ray from the pixel intersects first.
+ * If the ray does not intersect any sphere, the pixel is black.
+ * The color is stored in the ptr array in RGBA format, with each component as an unsigned char (0-255).
+ */
+void kernel(struct Sphere *s, int x, int y, unsigned char *ptr)
+{
+    int offset = x + y * DIM;
+    float ox = (x - DIM / 2);
+    float oy = (y - DIM / 2);
+
+    // printf("x:%d, y:%d, ox:%f, oy:%f\n",x,y,ox,oy);
+
+    float r = 0, g = 0, b = 0;
+    float maxz = -INF;
+    for (int i = 0; i < SPHERES; i++)
+    {
+        float n;
+        float t = hit(&s[i], ox, oy, &n);
+        if (t > maxz)
+        {
+            float fscale = n;
+            r = s[i].r * fscale;
+            g = s[i].g * fscale;
+            b = s[i].b * fscale;
+            maxz = t;
+        }
+    }
+
+    ptr[offset * 4 + 0] = (int)(r * 255);
+    ptr[offset * 4 + 1] = (int)(g * 255);
+    ptr[offset * 4 + 2] = (int)(b * 255);
+    ptr[offset * 4 + 3] = 255;
 }
 
 /**
@@ -173,7 +172,7 @@ int main(int argc, char *argv[])
     {
         for (int y = 0; y < DIM; y++)
         {
-            kernel(x, y, temp_s, bitmap);
+            kernel(temp_s, x, y, bitmap);
         }
     }
 
