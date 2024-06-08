@@ -5,7 +5,7 @@
 using 8 threads
 ```bash
 gcc-14 -fopenmp openmp_ray.c -o openmp_ray.out
-./openmp_ray.out 8
+./openmp_ray.out 8 result.ppm
 ```
 
 ## problem 2
