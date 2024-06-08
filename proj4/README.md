@@ -2,10 +2,17 @@
 
 ## problem 1
 
-using 8 threads
+openmp raytracing: using 8 threads
 ```bash
 gcc-14 -fopenmp openmp_ray.c -o openmp_ray.out
 ./openmp_ray.out 8 result.ppm
+```
+
+cuda raytracing: jupyter notebook
+```bash
+%%writefile cuda_ray.cu
+!nvcc -o cuda_ray.exe cuda_ray.cu
+!./cuda_ray.exe
 ```
 
 ## problem 2
