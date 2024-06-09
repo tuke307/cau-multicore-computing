@@ -24,7 +24,13 @@ nvcc -o cuda_ray.exe cuda_ray.cu
 
 ## problem 2
 
-cuda raytracing: jupyter notebook
+thrust
+```bash
+gcc-14 -fopenmp omp_pi_one.c -o omp_pi_one.out
+./omp_pi_one.out
+```
+
+cuda: jupyter notebook
 ```bash
 %%writefile thrust_ex.cu
 <code>
@@ -32,7 +38,7 @@ cuda raytracing: jupyter notebook
 !./thrust_ex.exe
 ```
 
-cuda raytracing: with nvidia graphics card
+cuda: with nvidia graphics card
 ```bash
 nvcc -o thrust_ex.exe thrust_ex.cu
 ./thrust_ex.exe
