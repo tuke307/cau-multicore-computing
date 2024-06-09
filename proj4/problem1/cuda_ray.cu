@@ -154,7 +154,7 @@ int main()
 
     float elapsedTime;
     cudaEventElapsedTime(&elapsedTime, start, stop);
-    printf("CUDA ray tracing: %f sec\n", elapsedTime / 1000);
+    printf("CUDA ray tracing: %f ms\n", elapsedTime);
 
     cudaMemcpy(bitmap, d_bitmap, sizeof(unsigned char) * DIM * DIM * 4, cudaMemcpyDeviceToHost);
 
@@ -165,6 +165,8 @@ int main()
     cudaFree(d_bitmap);
     free(bitmap);
     free(temp_s);
+
+    printf("[result.ppm] was generated.\n");
 
     return 0;
 }
