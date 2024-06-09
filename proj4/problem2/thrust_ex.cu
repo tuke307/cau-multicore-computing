@@ -47,7 +47,7 @@ int main()
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end_time - start;
 
-    std::cout << "Execution Time: " << elapsed.count() << " sec" << std::endl;
+    std::cout << "Execution Time: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count() << " ms" << std::endl;
     std::cout << "pi = " << pi << std::endl;
 
     return 0;
