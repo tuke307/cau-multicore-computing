@@ -178,13 +178,15 @@ int main(int argc, char *argv[])
 
     double end_time = omp_get_wtime();
 
-    printf("OpenMP (%d threads) ray tracing: %f sec\n", no_threads, end_time - start_time);
+    printf("OpenMP (%d threads) ray tracing: %f ms\n", no_threads, (end_time - start_time) * 1000);
 
     ppm_write(bitmap, DIM, DIM, fp);
 
     fclose(fp);
     free(bitmap);
     free(temp_s);
+
+    printf("[%s] was generated.\n", argv[2]);
 
     return 0;
 }
